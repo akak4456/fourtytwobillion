@@ -8,7 +8,7 @@ class GameViewModel : ViewModel() {
         arrayOf(
             arrayOf(0,0,0,0,0),
             arrayOf(0,0,0,0,0),
-            arrayOf(0,0,4294967296,0,0),
+            arrayOf(0,0,123456789123L,0,0),
             arrayOf(0,0,0,0,0),
             arrayOf(0,0,0,0,0),
         )

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">fourtytwobillion</string>
 
-    <string name="main_title">4,294,967,296</string>
+    <string name="main_title">123,456,789,123</string>
     <string name="main_new_game">NEW GAME</string>
     <string name="main_continue_game">CONTINUE GAME</string>
 
