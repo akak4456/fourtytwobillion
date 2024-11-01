@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_title"
+            android:text="@string/game_over_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,22 +22,26 @@
             android:textSize="50sp"/>
 
         <TextView
-            android:id="@+id/tv_new_game"
+            android:id="@+id/tv_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_new_game"
-            android:textSize="30sp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/bg_normal_btn"
-            android:padding="10dp"/>
+            android:text="@string/game_over_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            tools:text="@string/game_over_score"
+            android:layout_marginTop="16dp"
+            android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/tv_continue_game"
+            android:id="@+id/tv_restart_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_continue_game"
+            android:text="@string/game_over_restart"
             android:textSize="30sp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/bg_normal_btn"
             android:padding="10dp"/>
 

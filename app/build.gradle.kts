@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.adele.fourtytwobillion"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.adele.fourtytwobillion"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +32,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    dataBinding {
+        enable = true
     }
 }
 

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">fourtytwobillion</string>
+
+    <string name="main_title">4,294,967,296</string>
+    <string name="main_new_game">NEW GAME</string>
+    <string name="main_continue_game">CONTINUE GAME</string>
+
+    <string name="game_guide">검은 블럭을 클릭하세요!</string>
+    <string name="game_guide_2">단 %d 이하인 수는 클릭이 안됩니다</string>
+    <string name="game_score">점수: %d</string>
+    <string name="game_at_least_block">상하좌우로 남은 공간이 최소 2칸 이어야 합니다</string>
+
+    <string name="game_over_title">GAME OVER</string>
+    <string name="game_over_score">당신의 점수: %d</string>
+    <string name="game_over_restart">RESTART</string>
 </resources>
