@@ -2,6 +2,8 @@ package com.adele.fourtytwobillion
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.LinearLayout
@@ -14,10 +16,12 @@ import androidx.room.Room
 import com.adele.fourtytwobillion.databinding.ActivityGameBinding
 import com.adele.fourtytwobillion.model.AppDatabase
 import com.adele.fourtytwobillion.model.Game
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.StringTokenizer
 
 
 class GameActivity : AppCompatActivity() {
@@ -25,6 +29,7 @@ class GameActivity : AppCompatActivity() {
     private val gameViewModel: GameViewModel by viewModels()
     private val divideNumber = 5L
     private val possibleCnt = 3
+    private val AD_UNIT_ID = "ca-app-pub-4500295629086135/3384331997"
 
     private val db by lazy {
         Room.databaseBuilder(
@@ -95,6 +100,32 @@ class GameActivity : AppCompatActivity() {
         gameViewModel.score.observe(this) {
             binding.tvGameScore.text = String.format(getString(R.string.game_score), Util.getDecimalFormattedString(it.toString()))
         }
+
+        // Create a new ad view.
+        val adView = AdView(this)
+        adView.adUnitId = AD_UNIT_ID
+        adView.setAdSize(getAdSize())
+
+// Replace ad container with new ad view.
+        binding.adViewContainer.removeAllViews()
+        binding.adViewContainer.addView(adView)
+
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+    }
+
+    private fun getAdSize(): AdSize {
+        val displayMetrics = resources.displayMetrics
+        var adWidthPixels = displayMetrics.widthPixels
+
+        if (VERSION.SDK_INT >= VERSION_CODES.R) {
+            val windowMetrics = this.windowManager.currentWindowMetrics
+            adWidthPixels = windowMetrics.bounds.width()
+        }
+
+        val density = displayMetrics.density
+        val adWidth = (adWidthPixels / density).toInt()
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
     }
 
     private fun clickBlock(rowIdx: Int, colIdx: Int) {
