@@ -6,24 +6,50 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.room.Room
 import com.adele.fourtytwobillion.databinding.ActivityGameBinding
+import com.adele.fourtytwobillion.model.AppDatabase
+import com.adele.fourtytwobillion.model.Game
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.StringTokenizer
+
 
 class GameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameBinding
     private val gameViewModel: GameViewModel by viewModels()
     private val divideNumber = 5L
     private val possibleCnt = 3
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "game-database"
+        ).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_game)
         binding.lifecycleOwner = this
         binding.tvGameGuide2.text = String.format(getString(R.string.game_guide_2), divideNumber)
+        if(intent.getBooleanExtra("continue", false)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val games = db.gameDao().getGames()
+                if(games.size == 1) {
+                    runOnUiThread {
+                        gameViewModel.score.value = games[0].curScore
+                        gameViewModel.board.value = games[0].board
+                    }
+                }
+            }
+        }
         gameViewModel.board.observe(this) {
             val rows = arrayOf(
                 binding.llMainContentRow1,
@@ -67,7 +93,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         gameViewModel.score.observe(this) {
-            binding.tvGameScore.text = String.format(getString(R.string.game_score), it)
+            binding.tvGameScore.text = String.format(getString(R.string.game_score), Util.getDecimalFormattedString(it.toString()))
         }
     }
 
@@ -94,19 +120,18 @@ class GameActivity : AppCompatActivity() {
                         newNumSum += (it[rowIdx][colIdx] / divideNumber)
                         it[nRandomRow][nRandomCol] = it[nRandomRow][nRandomCol] + (it[rowIdx][colIdx] / divideNumber)
                     }
-                    if((it[rowIdx][colIdx] - newNumSum) / 1000000 == 0L) {
-                        gameViewModel.score.value = (gameViewModel.score.value
-                            ?: 0L) + 1
-                    } else {
-                        gameViewModel.score.value = (gameViewModel.score.value
-                            ?: 0L) + (it[rowIdx][colIdx] - newNumSum) / 1000000
-                    }
+                    gameViewModel.score.value = (gameViewModel.score.value
+                            ?: 0L) + (it[rowIdx][colIdx] - newNumSum)
                     it[rowIdx][colIdx] = 0
                     gameViewModel.board.value = it
                 } else {
                     binding.tvWarning.text = String.format(getString(R.string.game_at_least_block), possibleCnt)
                 }
             }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            db.gameDao().deleteGame(db.gameDao().getGames())
+            db.gameDao().insertGames(Game(curScore = gameViewModel.score.value ?: 0L, board = gameViewModel.board.value ?: arrayOf()))
         }
         if(testGameOver()) {
             startActivity(Intent(this, GameOverActivity::class.java).apply {

@@ -41,5 +41,13 @@
             android:background="@drawable/bg_normal_btn"
             android:padding="10dp"/>
 
+        <TextView
+            android:id="@+id/tv_highscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            tools:text="HIGH SCORE:1,234,567,890"
+            android:textSize="20sp"/>
+
     </LinearLayout>
 </layout>

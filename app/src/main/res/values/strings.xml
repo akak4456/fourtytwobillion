@@ -4,13 +4,15 @@
     <string name="main_title">4,294,967,296</string>
     <string name="main_new_game">NEW GAME</string>
     <string name="main_continue_game">CONTINUE GAME</string>
+    <string name="main_high_score">HIGH SCORE: %s</string>
 
     <string name="game_guide">Click the black block!</string>
     <string name="game_guide_2">Only numbers above %d can be clicked</string>
-    <string name="game_score">Score: %d</string>
+    <string name="game_score">Score: %s</string>
     <string name="game_at_least_block">There must be at least %d spaces left vertically or horizontally</string>
 
     <string name="game_over_title">GAME OVER</string>
-    <string name="game_over_score">Your Score: %d</string>
+    <string name="game_over_score">Your Score: %s</string>
     <string name="game_over_restart">RESTART</string>
+    <string name="game_over_high_score">HIGH SCORE!</string>
 </resources>

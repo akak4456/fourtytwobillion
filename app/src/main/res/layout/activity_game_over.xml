@@ -45,5 +45,14 @@
             android:background="@drawable/bg_normal_btn"
             android:padding="10dp"/>
 
+        <TextView
+            android:id="@+id/tv_high_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_over_high_score"
+            android:textColor="#FF0000"
+            android:layout_marginTop="16dp"
+            android:textSize="20sp"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>
