@@ -17,6 +17,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameBinding
     private val gameViewModel: GameViewModel by viewModels()
     private val divideNumber = 5L
+    private val possibleCnt = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -84,18 +85,26 @@ class GameActivity : AppCompatActivity() {
                         possiblePositions.add(pos)
                     }
                 }
-                if(possiblePositions.size >= 2) {
-                    val randomPositions = possiblePositions.shuffled().take(2)
-                    gameViewModel.score.value = (gameViewModel.score.value ?: 0L) + (it[rowIdx][colIdx]) % divideNumber
+                if(possiblePositions.size >= possibleCnt) {
+                    val randomPositions = possiblePositions.shuffled().take(possibleCnt)
+                    var newNumSum = 0L
                     randomPositions.forEach { randomPos ->
                         val nRandomRow = rowIdx + randomPos.drow
                         val nRandomCol = colIdx + randomPos.dcol
+                        newNumSum += (it[rowIdx][colIdx] / divideNumber)
                         it[nRandomRow][nRandomCol] = it[nRandomRow][nRandomCol] + (it[rowIdx][colIdx] / divideNumber)
+                    }
+                    if((it[rowIdx][colIdx] - newNumSum) / 1000000 == 0L) {
+                        gameViewModel.score.value = (gameViewModel.score.value
+                            ?: 0L) + 1
+                    } else {
+                        gameViewModel.score.value = (gameViewModel.score.value
+                            ?: 0L) + (it[rowIdx][colIdx] - newNumSum) / 1000000
                     }
                     it[rowIdx][colIdx] = 0
                     gameViewModel.board.value = it
                 } else {
-                    binding.tvWarning.text = getString(R.string.game_at_least_block)
+                    binding.tvWarning.text = String.format(getString(R.string.game_at_least_block), possibleCnt)
                 }
             }
         }
@@ -120,7 +129,7 @@ class GameActivity : AppCompatActivity() {
                                 possiblePositions.add(pos)
                             }
                         }
-                        if(possiblePositions.size >= 2) return false
+                        if(possiblePositions.size >= possibleCnt) return false
                     }
                 }
             }
